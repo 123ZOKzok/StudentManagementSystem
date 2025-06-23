@@ -1,0 +1,28 @@
+<div class="min-h-full">
+  <!-- Header - Only shown when logged in -->
+  @if (authService.isLoggedIn()) {
+    <app-header></app-header>
+  }
+
+  <!-- Main Content -->
+  <div class="flex">
+    <!-- Sidebar - Only shown when logged in -->
+    @if (authService.isLoggedIn()) {
+      <app-sidebar></app-sidebar>
+    }
+
+    <!-- Content Area -->
+    <main class="flex-1" [class.md:pl-64]="authService.isLoggedIn()">
+      <div class="py-6">
+        <div class="mx-auto px-4 sm:px-6 md:px-8">
+          <router-outlet></router-outlet>
+        </div>
+      </div>
+    </main>
+  </div>
+
+  <!-- Loading Spinner -->
+  @if (loading) {
+    <app-loading-spinner></app-loading-spinner>
+  }
+</div>

@@ -1,0 +1,104 @@
+<div class="min-h-screen bg-gradient-to-br from-indigo-50 to-gray-100 flex flex-col">
+  <main class="flex-grow flex items-center justify-center p-4 sm:p-6 transition-all duration-300">
+    <div class="w-full max-w-md bg-white rounded-2xl shadow-lg overflow-hidden transition-all hover:shadow-xl">
+      <!-- Header Section -->
+      <div class="bg-gradient-to-r from-indigo-600 to-indigo-500 px-6 py-8 text-center">
+        <h1 class="text-3xl font-bold text-white tracking-tight">Student Management</h1>
+        <p class="mt-2 text-indigo-100/90">Sign in to your account</p>
+      </div>
+
+      <!-- Form Section -->
+      <div class="px-8 py-8 sm:px-10">
+        <form [formGroup]="loginForm" (ngSubmit)="onSubmit()" class="space-y-6">
+          <!-- Username Field -->
+          <div class="space-y-1">
+            <label for="username" class="block text-sm font-medium text-gray-700">
+              Username
+            </label>
+            <div class="relative mt-1 rounded-md shadow-sm transition-all focus-within:ring-2 focus-within:ring-indigo-500 focus-within:ring-offset-2">
+              <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                <svg class="h-5 w-5 text-gray-400" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
+                  <path fill-rule="evenodd" d="M10 9a3 3 0 100-6 3 3 0 000 6zm-7 9a7 7 0 1114 0H3z" clip-rule="evenodd" />
+                </svg>
+              </div>
+              <input
+                id="username"
+                type="text"
+                formControlName="username"
+                autocomplete="username"
+                required
+                class="block w-full pl-10 pr-3 py-3 border border-gray-300 rounded-md placeholder-gray-400 focus:outline-none focus:ring-0 focus:border-indigo-500 sm:text-sm transition-colors duration-200"
+                placeholder="john.doe"
+                [class.invalid]="loginForm.get('username')?.invalid && (loginForm.get('username')?.dirty || loginForm.get('username')?.touched)"
+              >
+            </div>
+            @if (loginForm.get('username')?.invalid && (loginForm.get('username')?.dirty || loginForm.get('username')?.touched)) {
+              <p class="mt-1 text-sm text-red-600">Please enter a valid username</p>
+            }
+          </div>
+
+          <!-- Password Field -->
+          <div class="space-y-1">
+            <label for="password" class="block text-sm font-medium text-gray-700">
+              Password
+            </label>
+            <div class="relative mt-1 rounded-md shadow-sm transition-all focus-within:ring-2 focus-within:ring-indigo-500 focus-within:ring-offset-2">
+              <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                <svg class="h-5 w-5 text-gray-400" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
+                  <path fill-rule="evenodd" d="M5 9V7a5 5 0 0110 0v2a2 2 0 012 2v5a2 2 0 01-2 2H5a2 2 0 01-2-2v-5a2 2 0 012-2zm8-2v2H7V7a3 3 0 016 0z" clip-rule="evenodd" />
+                </svg>
+              </div>
+              <input
+                id="password"
+                type="password"
+                formControlName="password"
+                autocomplete="current-password"
+                required
+                class="block w-full pl-10 pr-3 py-3 border border-gray-300 rounded-md placeholder-gray-400 focus:outline-none focus:ring-0 focus:border-indigo-500 sm:text-sm transition-colors duration-200"
+                placeholder="••••••••"
+                [class.invalid]="loginForm.get('password')?.invalid && (loginForm.get('password')?.dirty || loginForm.get('password')?.touched)"
+              >
+            </div>
+            <div class="mt-2 flex items-center justify-between">
+              @if (loginForm.get('password')?.invalid && (loginForm.get('password')?.dirty || loginForm.get('password')?.touched)) {
+                <p class="text-sm text-red-600">Password must be at least 6 characters</p>
+              }
+              <a href="#" class="text-sm font-medium text-indigo-600 hover:text-indigo-500 transition-colors duration-200">
+                Forgot password?
+              </a>
+            </div>
+          </div>
+
+          <!-- Submit Button -->
+          <div class="pt-2">
+            <button
+              type="submit"
+              [disabled]="loginForm.invalid || isLoading"
+              class="w-full flex justify-center items-center py-3 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 disabled:opacity-70 disabled:cursor-not-allowed transition-all duration-200"
+              [class.opacity-70]="isLoading"
+            >
+              @if (isLoading) {
+                <span class="flex items-center">
+                  <svg class="animate-spin -ml-1 mr-3 h-5 w-5 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                    <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+                    <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+                  </svg>
+                  Signing in...
+                </span>
+              } @else {
+                <span>Sign in</span>
+              }
+            </button>
+          </div>
+        </form>
+      </div>
+
+      <!-- Footer Section -->
+      <div class="bg-gray-50/50 px-6 py-4 text-center border-t border-gray-100">
+        <p class="text-xs text-gray-500">
+          © 2025 Student Management System. All rights reserved.
+        </p>
+      </div>
+    </div>
+  </main>
+</div>
