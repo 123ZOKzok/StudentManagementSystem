@@ -2,6 +2,7 @@ package org.example;
 
 import org.example.entity.User;
 import org.example.repository.UserRepository;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
@@ -17,42 +18,47 @@ public class StudentManagementApplication {
         SpringApplication.run(StudentManagementApplication.class, args);
     }
 
-    /**
-     * Initializes the database with test users when the application starts
-     * This runs after the application context is loaded
-     */
     @Bean
-    CommandLineRunner initDatabase(UserRepository userRepository, PasswordEncoder passwordEncoder) {
+    CommandLineRunner initDatabase(
+            UserRepository userRepository,
+            PasswordEncoder passwordEncoder,
+            @Value("${app.default.admin.username}") String adminUsername,
+            @Value("${app.default.admin.password}") String adminPassword,
+            @Value("${app.default.admin.email}") String adminEmail,
+            @Value("${app.default.teacher.username}") String teacherUsername,
+            @Value("${app.default.teacher.password}") String teacherPassword,
+            @Value("${app.default.teacher.email}") String teacherEmail,
+            @Value("${app.default.staff.username}") String staffUsername,
+            @Value("${app.default.staff.password}") String staffPassword,
+            @Value("${app.default.staff.email}") String staffEmail
+    ) {
         return args -> {
-            // Create admin user if not exists
-            if (userRepository.findByUsername("admin").isEmpty()) {
+            if (userRepository.findByUsername(adminUsername).isEmpty()) {
                 User admin = new User();
-                admin.setUsername("admin");
-                admin.setPassword(passwordEncoder.encode("admin123"));
-                admin.setEmail("admin@school.com");
-                admin.setRoles(List.of("ROLE_ADMIN")); // Add roles
+                admin.setUsername(adminUsername);
+                admin.setPassword(passwordEncoder.encode(adminPassword));
+                admin.setEmail(adminEmail);
+                admin.setRoles(List.of("ROLE_ADMIN"));
                 userRepository.save(admin);
                 System.out.println("Admin user created successfully");
             }
 
-            // Create teacher user if not exists
-            if (userRepository.findByUsername("teacher").isEmpty()) {
+            if (userRepository.findByUsername(teacherUsername).isEmpty()) {
                 User teacher = new User();
-                teacher.setUsername("teacher");
-                teacher.setPassword(passwordEncoder.encode("teacher123"));
-                teacher.setEmail("teacher@school.com");
-                teacher.setRoles(List.of("ROLE_TEACHER")); // Add roles
+                teacher.setUsername(teacherUsername);
+                teacher.setPassword(passwordEncoder.encode(teacherPassword));
+                teacher.setEmail(teacherEmail);
+                teacher.setRoles(List.of("ROLE_TEACHER"));
                 userRepository.save(teacher);
                 System.out.println("Teacher user created successfully");
             }
 
-            // Create staff user if not exists
-            if (userRepository.findByUsername("staff").isEmpty()) {
+            if (userRepository.findByUsername(staffUsername).isEmpty()) {
                 User staff = new User();
-                staff.setUsername("staff");
-                staff.setPassword(passwordEncoder.encode("staff123"));
-                staff.setEmail("staff@school.com");
-                staff.setRoles(List.of("ROLE_STAFF")); // Add roles
+                staff.setUsername(staffUsername);
+                staff.setPassword(passwordEncoder.encode(staffPassword));
+                staff.setEmail(staffEmail);
+                staff.setRoles(List.of("ROLE_STAFF"));
                 userRepository.save(staff);
                 System.out.println("Staff user created successfully");
             }

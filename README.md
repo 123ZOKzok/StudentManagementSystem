@@ -1,9 +1,6 @@
-
 # Student Management System
 
 A full-stack application for managing student records with secure login, data generation, processing, and reporting features.
-
-![App Screenshot](screenshot.png)
 
 ---
 
@@ -129,34 +126,53 @@ ng serve
 
 ---
 
-## Development & Testing
+## System Architecture
 
-### Backend
+### 🖥️ Overview Diagram (Markdown Representation)
 
-```bash
-./mvnw test
 ```
-
-### Frontend
-
-```bash
-npm run test
-```
-
----
-
-## Build for Production
-
-### Backend
-
-```bash
-./mvnw clean package
-```
-
-### Frontend
-
-```bash
-npm run build
+                   ┌──────────────┐
+                   │    Users     │
+                   └─────┬────────┘
+                         │
+               ┌─────────▼──────────┐
+               │   Angular Frontend │
+               │  - JWT Login       │
+               │  - Dashboard       │
+               │  - UI Modules      │
+               └─────────┬──────────┘
+                         │ HTTP + JWT
+               ┌─────────▼─────────────┐
+               │   Spring Boot Backend │
+               │  - REST API (secured) │
+               │  - Business Logic     │
+               └─────────┬─────────────┘
+                         │
+        ┌────────────────┴─────────────────────┐
+        │                                      │
+┌───────▼────────┐                ┌────────────▼────────────┐
+│ Data Generator │                │ File Upload & Processor │
+│ Excel Export   │                │ Excel → CSV (+10 score) │
+│ (0–1M records) │                │ Excel → DB (+5 score)   │
+└────────────────┘                └─────────────────────────┘
+                         │
+                ┌────────▼─────────┐
+                │  MS SQL Server   │
+                │  - Students DB   │
+                │  - Soft Deletes  │
+                └────────┬─────────┘
+                         │
+              ┌──────────▼────────────┐
+              │  Student Report View  │
+              │ - Filters: ID, Class  │
+              │ - Export to Excel     │
+              └──────────┬────────────┘
+                         │
+                  ┌──────▼───────┐
+                  │ Local Storage│
+                  │ - Photo Uploads │
+                  │ - Path & Naming │
+                  └───────────────┘
 ```
 
 ---
@@ -184,4 +200,13 @@ export const environment = {
 
 ---
 
-## Demo Walkthrough (Video)
+## Challenges & Optimizations
+
+### Challenges Encountered
+- Handling large Excel file generation(1M).
+- File path management on Linux.
+---
+
+## License
+
+[MIT License](LICENSE)
