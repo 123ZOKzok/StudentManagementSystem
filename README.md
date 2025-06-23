@@ -200,6 +200,9 @@ export const environment = {
 
 ---
 
+## Demo Video
+[Watch Demo Video](assets/demo.webm)
+
 ## Challenges & Optimizations
 
 ### Challenges Encountered
