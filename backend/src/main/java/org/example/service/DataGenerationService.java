@@ -1,7 +1,7 @@
 package org.example.service;
 
 import org.apache.poi.ss.usermodel.*;
-import org.apache.poi.xssf.usermodel.XSSFWorkbook;
+import org.apache.poi.xssf.streaming.SXSSFWorkbook;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
@@ -24,7 +24,8 @@ public class DataGenerationService {
     private final Random random = new Random();
 
     public File generateStudentData(int recordCount) throws IOException {
-        Workbook workbook = new XSSFWorkbook();
+        // Use SXSSFWorkbook for low-memory writing
+        SXSSFWorkbook workbook = new SXSSFWorkbook(100);
         Sheet sheet = workbook.createSheet("Students");
 
         // Create header row
@@ -34,30 +35,33 @@ public class DataGenerationService {
             headerRow.createCell(i).setCellValue(headers[i]);
         }
 
-        // Generate data
+        // Generate student data rows
         for (int i = 1; i <= recordCount; i++) {
             Row row = sheet.createRow(i);
-            row.createCell(0).setCellValue(i); // studentId
-            row.createCell(1).setCellValue(generateRandomName(3, 8)); // firstName
-            row.createCell(2).setCellValue(generateRandomName(3, 8)); // lastName
-            row.createCell(3).setCellValue(generateRandomDob().toString()); // DOB
-            row.createCell(4).setCellValue("Class" + (random.nextInt(5) + 1)); // class
-            row.createCell(5).setCellValue(55 + random.nextInt(31)); // score (55-85)
-            row.createCell(6).setCellValue(1); // status
-            row.createCell(7).setCellValue(""); // photoPath
+            row.createCell(0).setCellValue(i);
+            row.createCell(1).setCellValue(generateRandomName(3, 8));
+            row.createCell(2).setCellValue(generateRandomName(3, 8));
+            row.createCell(3).setCellValue(generateRandomDob().toString());
+            row.createCell(4).setCellValue("Class" + (random.nextInt(5) + 1));
+            row.createCell(5).setCellValue(55 + random.nextInt(31));
+            row.createCell(6).setCellValue(1);
+            row.createCell(7).setCellValue("");
         }
 
-        // Save file
+        // Ensure target directory exists
         Path dirPath = Paths.get(dataProcessingLocation);
         if (!Files.exists(dirPath)) {
             Files.createDirectories(dirPath);
         }
 
+        // Build file path
         String fileName = "students_" + System.currentTimeMillis() + ".xlsx";
         Path filePath = dirPath.resolve(fileName);
 
+        // Write and flush to file
         try (FileOutputStream outputStream = new FileOutputStream(filePath.toFile())) {
             workbook.write(outputStream);
+            workbook.dispose(); // Clean up temp files
         }
 
         return filePath.toFile();

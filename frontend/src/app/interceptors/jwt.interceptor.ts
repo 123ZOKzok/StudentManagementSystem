@@ -1,4 +1,3 @@
-// src/app/interceptors/jwt.interceptor.ts
 import { Injectable } from '@angular/core';
 import {
   HttpRequest,
@@ -13,7 +12,8 @@ export class JwtInterceptor implements HttpInterceptor {
   intercept(request: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
     const token = localStorage.getItem('access_token');
 
-    if (token) {
+    // Don't add token to login request
+    if (token && !request.url.includes('/api/auth/login')) {
       request = request.clone({
         setHeaders: {
           Authorization: `Bearer ${token}`

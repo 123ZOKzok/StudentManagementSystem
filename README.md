@@ -186,7 +186,7 @@ spring.datasource.url=jdbc:sqlserver://localhost;databaseName=studentdb
 spring.datasource.username=sa
 spring.datasource.password=your_password
 app.jwt.secret=your_secret_key
-app.jwt.expiration-ms=86400000
+app.jwt.expiration-ms=2592000000
 ```
 
 ### Frontend (`environment.ts`)
